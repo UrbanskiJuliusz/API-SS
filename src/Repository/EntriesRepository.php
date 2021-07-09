@@ -19,6 +19,31 @@ class EntriesRepository extends ServiceEntityRepository
         parent::__construct($registry, Entries::class);
     }
 
+    public function transform(Entries $entry)
+    {
+        return [
+            'id' => (int) $entry->getId(),
+            'category_id' => (int) $entry->getCategory()->getId(),
+            'company_name' => (string) $entry->getCompanyName(),
+            'www' => (string) $entry->getWww(),
+            'address' => (string) $entry->getAddress(),
+            'content' => (string) $entry->getContent(),
+            'created' => $entry->getCreated()->format('Y-m-d H:i:s')
+        ];
+    }
+
+    public function getAll()
+    {
+        $entries = $this->findAll();
+        $entriesArray = [];
+
+        foreach ($entries as $entry) {
+            $entriesArray[] = $this->transform($entry);
+        }
+
+        return $entriesArray;
+    }
+
     // /**
     //  * @return Entries[] Returns an array of Entries objects
     //  */
