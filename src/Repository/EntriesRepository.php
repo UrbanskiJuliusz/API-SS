@@ -4,7 +4,10 @@ namespace App\Repository;
 
 use App\Entity\Entries;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method Entries|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +17,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EntriesRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $manager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Entries::class);
+        $this->manager = $manager;
     }
 
     public function transform(Entries $entry)
@@ -42,6 +48,33 @@ class EntriesRepository extends ServiceEntityRepository
         }
 
         return $entriesArray;
+    }
+
+    public function addNew($category, $companyName, $www, $address, $content, $created)
+    {
+        $newEntry = new Entries();
+
+        $newEntry->setCategory($category);
+        $newEntry->setCompanyName($companyName);
+        $newEntry->setWww($www);
+        $newEntry->setAddress($address);
+        $newEntry->setContent($content);
+        $newEntry->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', $created));
+
+        $this->manager->persist($newEntry);
+        $this->manager->flush();
+    }
+
+    public function update(Entries $entries)
+    {
+        $this->manager->persist($entries);
+        $this->manager->flush();
+    }
+
+    public function remove(Entries $entries)
+    {
+        $this->manager->remove($entries);
+        $this->manager->flush();
     }
 
     // /**
