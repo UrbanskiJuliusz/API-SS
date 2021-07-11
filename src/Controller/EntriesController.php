@@ -56,7 +56,7 @@ class EntriesController extends AbstractController
     }
 
     /**
-     * @Route("/entries-www/{www}")
+     * @Route("/entries-www/{www}", methods={"GET"})
      * @return JsonResponse
      */
     public function getEntriesByWww($www): JsonResponse
@@ -67,7 +67,7 @@ class EntriesController extends AbstractController
     }
 
     /**
-     * @Route("/entries-category/{categoryId}")
+     * @Route("/entries-category/{categoryId}", methods={"GET"})
      * @param $categoryId
      * @return JsonResponse
      */
