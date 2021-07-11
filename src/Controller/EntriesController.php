@@ -57,6 +57,7 @@ class EntriesController extends AbstractController
 
     /**
      * @Route("/entries-www/{www}", methods={"GET"})
+     * @param $www
      * @return JsonResponse
      */
     public function getEntriesByWww($www): JsonResponse
@@ -102,6 +103,9 @@ class EntriesController extends AbstractController
         if(!$category)
             return new JsonResponse("Category doesn't exist!", Response::HTTP_NOT_FOUND);
 
+        if(\DateTime::createFromFormat('Y-m-d H:i:s', $created) == false)
+            return new JsonResponse("Required date format: Y-m-d H:i:s", Response::HTTP_NOT_ACCEPTABLE);
+
         $this->entriesRepository->addNew($category, $companyName, $www, $address, $content, $created);
 
         return new JsonResponse("Entry created!", Response::HTTP_CREATED);
@@ -127,6 +131,9 @@ class EntriesController extends AbstractController
 
         if(!$category)
             return new JsonResponse("Category doesn't exist!", Response::HTTP_NOT_FOUND);
+
+        if(\DateTime::createFromFormat('Y-m-d H:i:s', $data['created']) == false)
+            return new JsonResponse("Required date format: Y-m-d H:i:s", Response::HTTP_NOT_ACCEPTABLE);
 
         empty($data['categoryId']) ? true : $entry->setCategory($category);
         empty($data['companyName']) ? true : $entry->setCompanyName($data['companyName']);
