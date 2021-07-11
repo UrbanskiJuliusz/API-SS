@@ -19,6 +19,16 @@
   <td>BRAK</td>
 </tr> 
 <tr>
+  <td>GET</td>
+  <td>/api/entries-www/{nazwa_domeny}</td>
+  <td>BRAK</td>
+</tr> 
+<tr>
+  <td>GET</td>
+  <td>/api/api/entries-category/{id_kategorii}</td>
+  <td>BRAK</td>
+</tr> 
+<tr>
   <td>POST</td>
   <td>/add-entry</td>
   <td>
