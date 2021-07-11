@@ -1,6 +1,6 @@
 # API-SS
 
-## Entries
+## Entry
 
 <table>
 <tr>
