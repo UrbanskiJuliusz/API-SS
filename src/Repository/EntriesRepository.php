@@ -77,6 +77,42 @@ class EntriesRepository extends ServiceEntityRepository
         $this->manager->flush();
     }
 
+    public function findByWwwField($pageWww)
+    {
+        $query = $this->createQueryBuilder('e')
+            ->where('e.www LIKE :www')
+            ->setParameter('www', '%'.$pageWww.'%')
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $entriesArray = [];
+
+        foreach ($query as $entry) {
+            $entriesArray[] = $this->transform($entry);
+        }
+
+        return $entriesArray;
+    }
+
+    public function findByCategoryId($categoryId)
+    {
+        $query = $this->createQueryBuilder('e')
+            ->where('e.category = :id')
+            ->setParameter('id', $categoryId)
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $entriesArray = [];
+
+        foreach ($query as $entry) {
+            $entriesArray[] = $this->transform($entry);
+        }
+
+        return $entriesArray;
+    }
+
     // /**
     //  * @return Entries[] Returns an array of Entries objects
     //  */

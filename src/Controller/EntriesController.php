@@ -56,6 +56,29 @@ class EntriesController extends AbstractController
     }
 
     /**
+     * @Route("/entries-www/{www}")
+     * @return JsonResponse
+     */
+    public function getEntriesByWww($www): JsonResponse
+    {
+        $entries = $this->entriesRepository->findByWwwField($www);
+
+        return new JsonResponse($entries, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/entries-category/{categoryId}")
+     * @param $categoryId
+     * @return JsonResponse
+     */
+    public function getEntriesByCategoryId($categoryId): JsonResponse
+    {
+        $entries = $this->entriesRepository->findByCategoryId($categoryId);
+
+        return new JsonResponse($entries, Response::HTTP_OK);
+    }
+
+    /**
      * @Route("/add-entry", methods={"POST"})
      * @param Request $request
      * @param CategoriesRepository $categoryRepository
